@@ -34,7 +34,7 @@ class Base(DeclarativeBase):
     pass
 
 # Connect to Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', 'sqlite:///blog.db')
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -80,12 +80,17 @@ class Comment(db.Model):
 with app.app_context():
     db.create_all()
     # make admin user with top permissions
-    new_user = User(email=os.environ.get('ADMIN_EMAIL'),
-                    password=generate_password_hash(password=os.environ.get('ADMIN_PASSWORD'), method='pbkdf2:sha256', salt_length=8),
-                    name=os.environ.get('ADMIN_NAME'),
-                    classification=2)
-    db.session.add(new_user)
-    db.session.commit()
+    existing_admin = User.query.filter_by(email="adrmiller555@gmail.com").first()
+    if not existing_admin:
+        new_user = User(
+            email="adrmiller555@gmail.com",
+            password=generate_password_hash(password=os.environ.get('ADMIN_PASSWORD'),
+                                            method='pbkdf2:sha256', salt_length=8),
+            name="Hadar Miller",
+            classification=2
+        )
+        db.session.add(new_user)
+        db.session.commit()
 
 def get_classification_level() -> int:
     """
