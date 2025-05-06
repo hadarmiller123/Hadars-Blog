@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Hadar's Blog{% endblock %}
+{% block navbar %} {% include 'navbar.html' %} {% endblock %}
+{% block content %}
+  <main>
+    <section id="cards">
+      <div class="container-fluid">
+        <div class="flex-md-equal mx-lg-5">
+          <div class="text-center overflow-hidden">
+            <div class="my-3 p-3">
+              <h2 class="display-4">{{ post.title }}</h2>
+              <h3 class="display-6">{{ post.subtitle }}</h3>
+              <hr />
+              <br />
+              <p class="lead">{{ post.body | safe }}</p>
+            </div>
+            <div class="mx-auto">
+              <img
+                id="post-image-{{ post.id }}"
+                src="{{ post.img_url }}"
+                alt="the post image"
+                class="img-fluid"
+              />
+            </div>
+            {% if classification_level >= 2: %}
+            <a
+              class="btn btn-dark mt-4"
+              href="{{url_for('edit_post', post_id=post.id)}}"
+              role="button"
+              >Edit Post</a
+            >
+            {% endif %}
+            {% if classification_level >= 1: %}
+            <a
+              class="btn btn-dark mt-4"
+              href="{{url_for('comment_post', post_id=post.id)}}"
+              role="button"
+              >Write a Comment</a
+            >
+            {% endif %}
+          </div>
+
+          {% for comment in comments: %}
+            {% if comment.approved or classification_level >= 2 %}
+            <div class="container text-center text-md-start">
+              <hr class="featurette-divider" />
+              <div class="row featurette">
+                <div class="col-md-8 mb-4 mb-md-0">
+                  <h2 class="fw-bold">{{ comment.comment_user.name }}</h2>
+                  <h5>{{ comment.body }}</h5>
+                </div>
+              </div>
+              {% if classification_level >= 2: %}
+              <div class="row featurette">
+                <div class="col-md-8">
+                  {% if not comment.approved %}
+                  <a
+                    class="btn btn-dark mt-4 mt-2"
+                    href="{{url_for('approve_comment', comment_id=comment.id)}}"
+                    role="button"
+                    >Approve Comment</a
+                  >
+                  {% endif %}
+                  <a
+                    class="btn btn-dark mt-4 mt-2"
+                    href="{{url_for('delete_comment', comment_id=comment.id)}}"
+                    role="button"
+                    >Delete Comment</a
+                  >
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}
+{% block footer %} {% include 'footer.html' %} {% endblock %}

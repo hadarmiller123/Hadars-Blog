@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}Hadar's Blog{% endblock %}
+{% block navbar %} {% include 'navbar.html' %} {% endblock %}
+{% block content %}
+  <main>
+    <section id="title">
+      <div
+        id="myCarousel"
+        class="carousel slide mb-0 d-lg-block d-none"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#myCarousel"
+            data-bs-slide-to="0"
+            class="active"
+            aria-label="Slide 1"
+            aria-current="true"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#myCarousel"
+            data-bs-slide-to="1"
+            aria-label="Slide 2"
+            class=""
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#myCarousel"
+            data-bs-slide-to="2"
+            aria-label="Slide 3"
+            class=""
+          ></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item carousel-item-next carousel-item-start">
+            <img
+              src="../static/images/ducks.jpg"
+              alt="library image"
+              width="100%"
+              height="600px"
+            />
+
+            <div class="container">
+              <div class="carousel-caption text-start">
+                <h1>Capturing Life, One Word at a Time</h1>
+                <p>
+                  I see every picture as an opportunity to weave words into
+                  moments, creating a lasting memory for both myself and my
+                  readers.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img
+              src="../static/images/books.jpg"
+              alt="blog domino image"
+              width="100%"
+              height="600px"
+            />
+
+            <div class="container">
+              <div class="carousel-caption">
+                <h1>Through My Lens and Pen</h1>
+                <p>
+                  Writing has always been my way of documenting the beauty of
+                  life, and my photos reflect that passion.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item active carousel-item-start">
+            <img
+              src="../static/images/camera.jpg"
+              alt="camera image"
+              width="100%"
+              height="600px"
+            />
+
+            <div class="container">
+              <div class="carousel-caption text-end">
+                <h1>Turning Moments into Memories</h1>
+                <p>
+                  Every snapshot here is a piece of my journey, and every word
+                  written is my way of preserving it.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="cards">
+      <div class="container my-5 text-center text-md-start pt-1 pt-lg-0">
+        {% for post in posts: %}
+        <hr class="featurette-divider" />
+        <div class="row featurette">
+          <div class="col-md-7 mb-4 mb-md-0">
+            <h2 class="fw-bold">{{ post.title }}</h2>
+            <h4>{{ post.subtitle }}</h4>
+            <span>Posted by <b>{{ post.author }}</b> on the {{ post.date.strftime('%d-%m-%Y') }}</span>
+          </div>
+          <div class="col-md-5 text-center">
+            <img id="post-image" src="{{ post.img_url }}" alt="post image"
+            class="img-fluid" />
+          </div>
+        </div>
+        <div class="row featurette">
+          <div class="col-md-7">
+            <a
+              class="btn btn-dark mt-4 mt-2"
+              href="{{url_for('show_post', post_id=post.id)}}"
+              role="button"
+              >Continue Reading »</a
+            >
+            {% if classification_level >= 2: %}
+            <a
+              class="btn btn-dark mt-4 mt-2"
+              href="{{url_for('delete_post', post_id=post.id)}}"
+              role="button"
+              >Delete Post</a
+            >
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+{% endblock %}
+{% block footer %} {% include 'footer.html' %} {% endblock %}

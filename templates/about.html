@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Hadar's Blog{% endblock %}
+{% block navbar %} {% include 'navbar.html' %} {% endblock %}
+{% block content %}
+  <main>
+    <section id="about">
+      <div class="container px-4 pt-5 my-0">
+        <div class="row flex-lg-row-reverse justify-content-center g-5 pt-5">
+          <div
+            class="col-sm-12 col-lg-6 d-flex justify-content-center align-items-center my-0"
+          >
+            <img
+              src="../static/images/me.jpeg"
+              class="rounded-4"
+              alt="image of myself"
+              height="400px"
+              loading="lazy"
+              width="400px"
+            />
+          </div>
+          <div class="col-lg-6">
+            <h2 class="display-7 fw-bold text-body-emphasis mb-4">
+              Hadar Miller - Python Developer &amp; Vlog Addicted
+            </h2>
+            <p class="lead">
+              Welcome to my world! I'm Hadar, a software engineer with a passion
+              for Python, creative problem-solving, and sharing my journey through
+              vlogging. Whether it's building innovative systems, crafting
+              engaging games, or diving into the latest tech trends, I bring
+              energy and curiosity to everything I do. Here, you'll get a glimpse
+              of my professional achievements, personal projects, and the stories
+              behind the code. Stay tuned for insights, tips, and a bit of fun
+              along the way!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}
+{% block footer %} {%include 'footer.html' %} {% endblock %}

@@ -1,0 +1,97 @@
+<section id="sticky-navbar">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand px-lg-2 py-0" href="{{url_for('home')}}">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="80"
+          fill="currentColor"
+          class="bi bi-eyeglasses"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"
+          />
+        </svg>
+      </a>
+      <h2 class="navbar-brand d-lg-none">Hadar's Blog</h2>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mx-lg-0 mx-2">
+          <li class="nav-item mx-lg-2">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{{url_for('home')}}"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item mx-lg-2">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{{url_for('about')}}"
+              >About Me</a
+            >
+          </li>
+          <li class="nav-item mx-lg-2">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{{url_for('contact')}}"
+              >Contact</a
+            >
+          </li>
+          {% if classification_level >= 2: %}
+          <li class="nav-item mx-lg-2">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{{url_for('create_post')}}"
+              >Create</a
+            >
+          </li>
+          {% endif %}
+          {% if classification_level >= 1: %}
+          <li class="nav-item mx-lg-2">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{{url_for('logout')}}"
+              >Logout</a
+            >
+          </li>
+          {% endif %}
+          {% if classification_level < 1: %}
+          <li class="nav-item mx-lg-2">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{{url_for('login')}}"
+              >Login</a
+            >
+          </li>
+          <li class="nav-item mx-lg-2">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{{url_for('register')}}"
+              >Register</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
