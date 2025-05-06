@@ -15,6 +15,8 @@ from flask_login import UserMixin, LoginManager, login_user, logout_user, curren
 from flask_bootstrap import Bootstrap5
 from forms import ContactForm, EditPostForm, CreatePostForm, RegisterForm, LoginForm, CommentForm
 from flask_ckeditor import CKEditor
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 load_dotenv()
 
@@ -220,42 +222,34 @@ def contact():
 
     form = ContactForm()
     if form.validate_on_submit():
-        # Extract form data
         name = form.name.data
         email = form.email.data
         phone = form.phone.data
         message = form.message.data
-        subject = "New Form Submission - Hadar's Blog"
+
+        email_body = f"Name: {name}\nEmail: {email}\nPhone: {phone}\nMessage: {message}"
 
         try:
-            # Generate the email using UTF-8
-            msg = EmailMessage()
-            msg['Subject'] = subject
-            msg['From'] = os.environ.get("EMAIL")
-            msg['To'] = os.environ.get("EMAIL")
-            msg.set_content(
-                f"name: {name}\nemail: {email}\nphone: {phone}\nmessage: {message}",
-                charset='utf-8'
+            message = Mail(
+                from_email=os.environ.get("EMAIL_TO"),
+                to_emails=os.environ.get("EMAIL_TO"),
+                subject="New Form Submission - Hadar's Blog",
+                plain_text_content=email_body
             )
-
-            # Send the email
-            with smtplib.SMTP("smtp.gmail.com") as connection:
-                connection.starttls()
-                connection.login(
-                    user=os.environ.get("EMAIL"),
-                    password=os.environ.get("PASSWORD")
-                )
-                connection.send_message(msg)
-
-            successful_message = 'The form was successfully sent :)'
-            is_sent = True
+            sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+            response = sg.send(message)
+            if response.status_code == 202:
+                successful_message = 'The form was successfully sent :)'
+                is_sent = True
+            else:
+                successful_message = 'We could not send the form at this moment. Please try again later.'
 
         except Exception as e:
-            successful_message = 'We could not send the form at this moment, please try again later.'
+            successful_message = 'An error occurred while sending the email.'
+            is_sent = True
 
     return render_template('contact.html', form=form, isSent=is_sent, status_message=successful_message,
-        classification_level=get_classification_level())
-
+                           classification_level=get_classification_level())
 
 @app.route("/create", methods=['GET', 'POST'])
 def create_post():
